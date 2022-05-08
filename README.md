@@ -1,2 +1,2 @@
-# Ant_Colony_Algorithm_Project
-Distributed packing problem for circles solved with ant colony algorithm
+# Bees_Algorithm_Project
+Distributed packing problem for circles solved with Bees algorithm
