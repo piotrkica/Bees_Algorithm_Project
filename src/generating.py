@@ -8,18 +8,6 @@ def is_valid_antenna(solution, new_antenna):  # TODO
     return True
 
 
-def generate_random_solution(map_size, antennas: []):  # TODO convert to classes
-    solution = {}
-    for antenna_type, (antenna_count, antenna_range, antenna_bandwidth) in antennas.items():
-        solution[antenna_type] = []
-        for _ in range(antenna_count):
-            random_coordinates = np.random.rand(2) * map_size
-            while not is_valid_antenna(solution, (random_coordinates, antenna_range, antenna_bandwidth)):
-                random_coordinates = np.random.rand(2) * map_size
-            solution[antenna_type].append(random_coordinates)
-    return solution
-
-
 def generate_random_cities(map_size, n_cities) -> [City]:
     def gen_city():
         return City(x=randint(0, map_size[0]),
