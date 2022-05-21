@@ -16,6 +16,6 @@ if __name__ == "__main__":
     cities_map = Map(map_size[0], map_size[1], cities, antennas)
 
     solution = bees_algorithm(cities_map.generate_random_solution, cities_map.sample_surrounding,
-                              cities_map.calculate_cost, max_iterations=1)
+                              cities_map.calculate_cost, max_iterations=100)
 
     cities_map.plot_solution(solution)

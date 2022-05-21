@@ -1,18 +1,15 @@
+from matplotlib import pyplot as plt
 from functools import reduce
 from random import randint
-
-from matplotlib import pyplot as plt
-from src.generating import is_valid_antenna
-
-from src.antenna import Antenna
-from src.city import City
 import numpy as np
 
+from src.generating import is_valid_antenna
+from src.city import City
 from src.utils import circles_intersection_area
 
 
 class Map:
-    def __init__(self, height, width, cities: [City], antennas: [Antenna]):
+    def __init__(self, height, width, cities: [City], antennas):
         self.height = height
         self.width = width
         self.cities = cities
@@ -24,10 +21,12 @@ class Map:
             for pos in positions:
                 radius = self.antennas[antenna_type][1]
                 for city in self.cities:
-                    total_cost += circles_intersection_area((*pos, radius), (city.x, city.y, city.radius))
+                    if (pos[0], pos[1], radius) in city:
+                        total_cost += int(3.14 * radius ** 2)
+                    # total_cost += circles_intersection_area((*pos, radius), (city.x, city.y, city.radius))
         return total_cost
 
-    def plot_solution(self, solution: [Antenna]):
+    def plot_solution(self, solution):
         _, ax = plt.subplots()
         ax.set_xlim(0, self.height)
         ax.set_ylim(0, self.width)

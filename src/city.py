@@ -1,14 +1,11 @@
-from src.antenna import Antenna
-
-
 class City:
     def __init__(self, x, y, radius):
         self.x = x
         self.y = y
         self.radius = radius
 
-    def __contains__(self, antenna: Antenna):
-        return (antenna.x - self.x) ** 2 + (antenna.y - self.y) ** 2 < self.radius ** 2
+    def __contains__(self, antenna):
+        return (antenna[0] - self.x) ** 2 + (antenna[1] - self.y) ** 2 < (self.radius - antenna[2]) ** 2
 
     def __repr__(self):
         return f"({self.x}, {self.y}, {self.radius})"
