@@ -1,4 +1,6 @@
 from functools import reduce
+from random import randint
+
 from matplotlib import pyplot as plt
 from src.generating import is_valid_antenna
 
@@ -47,9 +49,9 @@ class Map:
         for antenna_type, (antenna_count, antenna_range) in self.antennas.items():
             solution[antenna_type] = []
             for _ in range(antenna_count):
-                random_coordinates = np.random.rand(2) * [self.width, self.height]
+                random_coordinates = [randint(0, self.height), randint(0, self.width)]
                 while not is_valid_antenna(solution, (random_coordinates, antenna_range)):
-                    random_coordinates = np.random.rand(2) * [self.width, self.height]
+                    random_coordinates = [randint(0, self.height), randint(0, self.width)]
                 solution[antenna_type].append(random_coordinates)
 
         return solution
@@ -81,6 +83,8 @@ class Map:
             angle = np.random.rand() * np.pi * 2
             antenna_type, antenna_idx = antena_idx_to_type(index)
             antenna_pos = solution[antenna_type][antenna_idx]
-            new_pos = antenna_pos + [distance * np.cos(angle), distance * np.sin(angle)]
+            new_pos = [antenna_pos[0] + int(distance * np.cos(angle)), antenna_pos[1] + int(distance * np.sin(angle))]
+
             sample[antenna_type][antenna_idx] = new_pos
+
         return sample
