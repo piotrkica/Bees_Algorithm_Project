@@ -8,7 +8,7 @@ import numpy as np
 
 
 class Map:
-    def __init__(self, height, width, cities: [City], antennas):
+    def __init__(self, height, width, cities: [City], antennas: [Antenna]):
         self.height = height
         self.width = width
         self.cities = cities
@@ -61,11 +61,11 @@ class Map:
 
     def generate_random_solution(self):
         solution = {}
-        for antenna_type, (antenna_count, antenna_range, antenna_bandwidth) in self.antennas.items():
+        for antenna_type, (antenna_count, antenna_range) in self.antennas.items():
             solution[antenna_type] = []
             for _ in range(antenna_count):
                 random_coordinates = np.random.rand(2) * [self.width, self.height]
-                while not is_valid_antenna(solution, (random_coordinates, antenna_range, antenna_bandwidth)):
+                while not is_valid_antenna(solution, (random_coordinates, antenna_range)):
                     random_coordinates = np.random.rand(2) * [self.width, self.height]
                 solution[antenna_type].append(random_coordinates)
         return solution
@@ -75,7 +75,7 @@ class Map:
                                 self.antennas.values(), 0)
 
         def antena_idx_to_type(idx):
-            for antenna_type, (count, _, _) in self.antennas.items():
+            for antenna_type, (count, _) in self.antennas.items():
                 if idx < count:
                     return antenna_type, idx
                 idx -= count
