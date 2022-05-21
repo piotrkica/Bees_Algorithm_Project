@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 from src.bees import bees_algorithm
 from src.generating import *
 from src.map import Map
@@ -17,10 +16,6 @@ if __name__ == "__main__":
     cities_map = Map(map_size[0], map_size[1], cities, antennas)
 
     solution = bees_algorithm(cities_map.generate_random_solution, cities_map.sample_surrounding,
-                              cities_map.calculate_cost, max_iterations=100)
-    _, ax = plt.subplots()
-    ax.set_xlim(0, map_size[0])
-    ax.set_ylim(0, map_size[1])
-    cities_map.plot_cities(ax)
-    cities_map.plot_solution(solution, ax)
-    plt.show()
+                              cities_map.calculate_cost, max_iterations=1)
+
+    cities_map.plot_solution(solution)

@@ -25,21 +25,22 @@ class Map:
                     total_cost += circles_intersection_area((*pos, radius), (city.x, city.y, city.radius))
         return total_cost
 
-    def plot_cities(self, ax):
-        city_circles = []
-        for city in self.cities:
-            city_circles.append(plt.Circle((city.x, city.y), city.radius, color='b'))
-        for c in city_circles:
-            ax.add_patch(c)
+    def plot_solution(self, solution: [Antenna]):
+        _, ax = plt.subplots()
+        ax.set_xlim(0, self.height)
+        ax.set_ylim(0, self.width)
 
-    def plot_solution(self, solution: [Antenna], ax):
-        antennas_circles = []
+        for city in self.cities:
+            city_circle = plt.Circle((city.x, city.y), city.radius, color='b')
+            ax.add_patch(city_circle)
+
         for antenna_type, positions in solution.items():
-            _, antenna_range, _ = self.antennas[antenna_type]
+            _, antenna_range = self.antennas[antenna_type]
             for pos in positions:
-                antennas_circles.append(plt.Circle(pos, antenna_range, color='r'))
-        for antenna_circle in antennas_circles:
-            ax.add_patch(antenna_circle)
+                antenna_circle = plt.Circle(pos, antenna_range, color='r')
+                ax.add_patch(antenna_circle)
+
+        plt.show()
 
     def generate_random_solution(self):
         solution = {}
@@ -50,6 +51,7 @@ class Map:
                 while not is_valid_antenna(solution, (random_coordinates, antenna_range)):
                     random_coordinates = np.random.rand(2) * [self.width, self.height]
                 solution[antenna_type].append(random_coordinates)
+
         return solution
 
     def sample_surrounding(self, solution, distance):
