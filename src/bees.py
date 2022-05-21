@@ -1,3 +1,6 @@
+from tqdm import trange
+
+
 class Neighbourhood:
     MAX_NO_IMPROVEMENT_ITERATIONS = 10
     best_solution = None
@@ -49,10 +52,9 @@ def bees_algorithm(
         max_iterations=300,
         neighbourhood_radius=100000
 ):
-    iterations_count = 0
     neighbourhoods = [Neighbourhood(generate_solution, sample_surrounding, goal_function, neighbourhood_radius) for _ in
                       range(scouts_count)]
-    while iterations_count < max_iterations:
+    for iteration in trange(max_iterations):
         neighbourhoods.sort(key=lambda n: goal_function(n.scout), reverse=True)
         for i in range(elite_sites_count):
             neighbourhoods[i].recruit_foragers(20)
@@ -62,5 +64,5 @@ def bees_algorithm(
             neighbourhoods[i].local_search()
         for i in range(elite_sites_count + promising_sites_count, len(neighbourhoods)):
             neighbourhoods[i].global_search()
-        iterations_count += 1
+
     return Neighbourhood.best_solution
