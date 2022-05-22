@@ -78,10 +78,21 @@ class Map:
                     return antenna_type, idx
                 idx -= count
 
+        def is_intersecting(solution, antenna):
+            new_pos, radius_a = antenna
+            for antenna_type in solution:
+                _, radius_b = self.antennas[antenna_type]
+                for position in solution[antenna_type]:
+                    if position == antenna_pos and radius_a == radius_b:
+                        continue
+                    if (position[0] - new_pos[0]) ** 2 + (position[1] - new_pos[1]) ** 2 < (radius_a + radius_b) ** 2:
+                        return True
+            return False
+        
         sample = solution.copy()
         for key in sample:
             sample[key] = sample[key].copy()
-        distances = np.sqrt(np.random.rand(antennas_count)) * distance
+        distances = np.random.rand(antennas_count) * distance
         distances.sort()
         current_distance = 0
         for idx, val in enumerate(distances):
@@ -96,7 +107,15 @@ class Map:
             antenna_type, antenna_idx = antena_idx_to_type(index)
             antenna_pos = solution[antenna_type][antenna_idx]
             new_pos = [antenna_pos[0] + int(distance * np.cos(angle)), antenna_pos[1] + int(distance * np.sin(angle))]
-
+            _, antenna_radius = self.antennas[antenna_type] 
+            is_valid = False
+            while not is_valid:
+                is_valid = True
+                if is_intersecting(sample, (new_pos, antenna_radius)):
+                    is_valid = False
+                    angle = np.random.rand() * np.pi * 2
+                    distance = np.random.rand() * 2 * distance
+                    new_pos = [antenna_pos[0] + int(distance * np.cos(angle)), antenna_pos[1] + int(distance * np.sin(angle))]
+                    break
             sample[antenna_type][antenna_idx] = new_pos
-
         return sample
