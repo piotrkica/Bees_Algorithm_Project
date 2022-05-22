@@ -1,6 +1,13 @@
 import numpy as np
 
 
+def get_score(antennas, best_solution):
+    antennas_total_area = sum([antenna_count * (3.14 * antenna_range ** 2)
+                               for antenna_type, (antenna_count, antenna_range) in antennas.items()])
+
+    return best_solution / antennas_total_area
+
+
 def circles_intersection_area(circle_a, circle_b):
     x_a, y_a, r_a = circle_a
     x_b, y_b, r_b = circle_b

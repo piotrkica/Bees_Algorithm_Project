@@ -65,4 +65,4 @@ def bees_algorithm(
         for i in range(elite_sites_count + promising_sites_count, len(neighbourhoods)):
             neighbourhoods[i].global_search()
 
-    return Neighbourhood.best_solution
+    return Neighbourhood.best_solution, goal_function(Neighbourhood.best_solution)
