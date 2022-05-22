@@ -3,7 +3,6 @@ from functools import reduce
 from random import randint
 import numpy as np
 
-from src.generating import is_valid_antenna
 from src.city import City
 from src.utils import circles_intersection_area
 
@@ -44,12 +43,26 @@ class Map:
         plt.show()
 
     def generate_random_solution(self):
+        def is_valid_antenna(solution, new_antenna, antenna_range):
+            if antenna_range > new_antenna[0] or antenna_range > new_antenna[1]:
+                return False
+            if self.height - new_antenna[0] < antenna_range or self.width - new_antenna[1] < antenna_range:
+                return False
+
+            for antenna_type, antennas in solution.items():
+                for antenna in antennas:
+                    radius_sum = self.antennas[antenna_type][1] + antenna_range
+                    if (antenna[0] - new_antenna[0]) ** 2 + (antenna[1] - new_antenna[1]) ** 2 < radius_sum ** 2:
+                        return False
+
+            return True
+
         solution = {}
         for antenna_type, (antenna_count, antenna_range) in self.antennas.items():
             solution[antenna_type] = []
             for _ in range(antenna_count):
                 random_coordinates = [randint(0, self.height), randint(0, self.width)]
-                while not is_valid_antenna(solution, (random_coordinates, antenna_range)):
+                while not is_valid_antenna(solution, random_coordinates, antenna_range):
                     random_coordinates = [randint(0, self.height), randint(0, self.width)]
                 solution[antenna_type].append(random_coordinates)
 

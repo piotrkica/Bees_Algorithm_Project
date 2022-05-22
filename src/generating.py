@@ -4,10 +4,6 @@ import numpy as np
 from src.city import City
 
 
-def is_valid_antenna(solution, new_antenna):  # TODO
-    return True
-
-
 def generate_random_cities(map_size, n_cities) -> [City]:
     def gen_city():
         return City(x=randint(0, map_size[0]),
